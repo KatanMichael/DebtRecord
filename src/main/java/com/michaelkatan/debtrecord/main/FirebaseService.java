@@ -1,9 +1,13 @@
 package com.michaelkatan.debtrecord.main;
 
 
+import com.google.api.core.ApiFuture;
 import com.google.auth.oauth2.GoogleCredentials;
+import com.google.cloud.firestore.DocumentReference;
+import com.google.cloud.firestore.Firestore;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
+import com.google.firebase.cloud.FirestoreClient;
 import com.michaelkatan.debtrecord.interfaces.DAO;
 import com.michaelkatan.debtrecord.models.Debt;
 import org.springframework.stereotype.Repository;
@@ -16,11 +20,14 @@ import java.util.List;
 @Repository
 public class FirebaseService implements DAO
 {
-    FirebaseApp firebaseApp;
+    private FirebaseApp firebaseApp;
+    private final Firestore firestore;
 
     public FirebaseService()
     {
         initFirebase();
+
+        firestore = FirestoreClient.getFirestore();
     }
 
     private void initFirebase()
@@ -55,6 +62,8 @@ public class FirebaseService implements DAO
     @Override
     public void addDebt(Debt debt)
     {
+        final ApiFuture<DocumentReference> debts =
+                firestore.collection("debts").add(debt);
 
     }
 

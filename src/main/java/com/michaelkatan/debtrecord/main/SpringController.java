@@ -22,8 +22,8 @@ public class SpringController
                           @RequestParam(name = "personB") String personB,
                           @RequestParam(name = "amount") int amount)
     {
-        Debt debt = new Debt("A","B",100);
-
+        Debt debt = new Debt(personA,personB,amount);
+        firebaseService.addDebt(debt);
 
         return gson.toJson(debt);
     }

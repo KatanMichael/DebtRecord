@@ -1,6 +1,8 @@
 package com.michaelkatan.debtrecord.models;
 
 
+import java.util.UUID;
+
 public class Debt
 {
     private String debtId;
@@ -14,6 +16,7 @@ public class Debt
         this.personA = personA;
         this.personB = personB;
         this.amount = amount;
+        this.debtId = UUID.randomUUID().toString();
     }
 
     //Setters-Getters
