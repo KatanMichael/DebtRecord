@@ -96,13 +96,34 @@ public class FirebaseService implements DAO
     }
 
     @Override
-    public List<Debt> allDebtOfPerson(String name) {
-        return null;
+    public List<Debt> allDebtOfPerson(String name)
+    {
+        final ApiFuture<QuerySnapshot> query = firestore.collection("debts").whereEqualTo("personA", name).get();
+        List<Debt> debts = null;
+        try {
+            debts  = query.get().toObjects(Debt.class);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        return debts;
     }
 
     @Override
     public List<Debt> allDebtToPrson(String name) {
-        return null;
+        final ApiFuture<QuerySnapshot> query = firestore.collection("debts").whereEqualTo("personB", name).get();
+        List<Debt> debts = null;
+        try {
+            debts  = query.get().toObjects(Debt.class);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        return debts;
     }
 
     @Override

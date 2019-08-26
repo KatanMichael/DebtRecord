@@ -6,6 +6,8 @@ import com.michaelkatan.debtrecord.models.Debt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 public class SpringController
 {
@@ -32,9 +34,22 @@ public class SpringController
         final Debt debtById = firebaseService.getDebtById(id);
 
         return gson.toJson(debtById);
-
-
     }
 
+    @RequestMapping(method = RequestMethod.GET, path = "/debtsOf/{userName}")
+    public String getDebtsByPersonA(@PathVariable String userName)
+    {
+        final List<Debt> debts = firebaseService.allDebtOfPerson(userName);
+
+        return gson.toJson(debts);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, path = "/debtsTo/{userName}")
+    public String getDebtsByPersonB(@PathVariable String userName)
+    {
+        final List<Debt> debts = firebaseService.allDebtToPrson(userName);
+
+        return gson.toJson(debts);
+    }
 
 }
