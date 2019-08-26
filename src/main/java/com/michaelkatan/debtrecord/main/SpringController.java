@@ -4,10 +4,7 @@ package com.michaelkatan.debtrecord.main;
 import com.google.gson.Gson;
 import com.michaelkatan.debtrecord.models.Debt;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class SpringController
@@ -16,7 +13,7 @@ public class SpringController
     private FirebaseService firebaseService;
 
     Gson gson = new Gson();
-    @RequestMapping(method = RequestMethod.POST,path = "/addDebt")
+    @RequestMapping(method = RequestMethod.POST,path = "/debt")
 
     public String addDebt(@RequestParam(name = "personA") String personA,
                           @RequestParam(name = "personB") String personB,
@@ -26,6 +23,17 @@ public class SpringController
         firebaseService.addDebt(debt);
 
         return gson.toJson(debt);
+    }
+
+    @RequestMapping(method = RequestMethod.GET,path = "/debt/{id}")
+    public String getDebt(@PathVariable String id)
+    {
+
+        final Debt debtById = firebaseService.getDebtById(id);
+
+        return gson.toJson(debtById);
+
+
     }
 
 

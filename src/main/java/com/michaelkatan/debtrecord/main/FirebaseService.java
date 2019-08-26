@@ -5,6 +5,8 @@ import com.google.api.core.ApiFuture;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.firestore.DocumentReference;
 import com.google.cloud.firestore.Firestore;
+import com.google.cloud.firestore.QueryDocumentSnapshot;
+import com.google.cloud.firestore.QuerySnapshot;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.cloud.FirestoreClient;
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 @Repository
 public class FirebaseService implements DAO
@@ -68,8 +71,28 @@ public class FirebaseService implements DAO
     }
 
     @Override
-    public Debt getDebtById(String debtId) {
-        return null;
+    public Debt getDebtById(String debtId)
+    {
+        final ApiFuture<QuerySnapshot> query = firestore.collection("debts").whereEqualTo("debtId", debtId)
+                .get();
+
+        List<Debt> documents = null;
+        try {
+          documents  = query.get().toObjects(Debt.class);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        if(documents.size() == 0)
+        {
+            return null;
+        }else
+        {
+            return documents.get(0);
+        }
+
     }
 
     @Override
