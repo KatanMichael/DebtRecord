@@ -12,7 +12,7 @@ public interface DAO<T>
 
     List<Debt> allDebtOfPerson(String name);
 
-    List<Debt> allDebtToPrson(String name);
+    List<Debt> allDebtToPerson(String name);
 
     void updateExistingDebt(Debt debt);
 

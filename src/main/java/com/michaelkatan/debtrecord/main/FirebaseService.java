@@ -99,6 +99,7 @@ public class FirebaseService implements DAO
     public List<Debt> allDebtOfPerson(String name)
     {
         final ApiFuture<QuerySnapshot> query = firestore.collection("debts").whereEqualTo("personA", name).get();
+
         List<Debt> debts = null;
         try {
             debts  = query.get().toObjects(Debt.class);
@@ -112,7 +113,7 @@ public class FirebaseService implements DAO
     }
 
     @Override
-    public List<Debt> allDebtToPrson(String name) {
+    public List<Debt> allDebtToPerson(String name) {
         final ApiFuture<QuerySnapshot> query = firestore.collection("debts").whereEqualTo("personB", name).get();
         List<Debt> debts = null;
         try {
@@ -127,7 +128,31 @@ public class FirebaseService implements DAO
     }
 
     @Override
-    public void updateExistingDebt(Debt debt) {
+    public void updateExistingDebt(Debt inputDebt)
+    {
+        final ApiFuture<QuerySnapshot> querySnapshot = firestore.collection("debts")
+                .whereEqualTo("debtId", inputDebt.getDebtId()).get();
 
+        Debt queryDebt = null;
+        try {
+            final List<Debt> debts = querySnapshot.get().toObjects(Debt.class);
+            if(debts.size() > 0)
+            {
+                queryDebt = debts.get(0);
+            }else
+            {
+                System.out.println("No Debt Found");
+            }
+        } catch (InterruptedException e) {
+
+
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        if(queryDebt != null)
+        {
+            queryDebt.updateDebt(inputDebt);
+        }
     }
 }

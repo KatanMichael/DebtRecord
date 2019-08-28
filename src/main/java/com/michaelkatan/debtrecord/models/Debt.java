@@ -46,5 +46,12 @@ public class Debt
         this.amount = amount;
     }
 
+    public void updateDebt(Debt otherDebt)
+    {
+        this.amount = otherDebt.amount;
+        this.debtId = otherDebt.debtId;
+        this.personA = otherDebt.personA;
+        this.personB = otherDebt.personB;
+    }
 
 }

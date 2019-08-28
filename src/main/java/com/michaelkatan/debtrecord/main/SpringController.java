@@ -47,8 +47,7 @@ public class SpringController
     @RequestMapping(method = RequestMethod.GET, path = "/debtsTo/{userName}")
     public String getDebtsByPersonB(@PathVariable String userName)
     {
-        final List<Debt> debts = firebaseService.allDebtToPrson(userName);
-
+        final List<Debt> debts = firebaseService.allDebtToPerson(userName);
         return gson.toJson(debts);
     }
 
